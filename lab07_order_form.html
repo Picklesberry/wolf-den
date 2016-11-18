@@ -1,0 +1,230 @@
+<html>
+<head>
+<title>Lab 07 - Order form</title>
+<script type="text/javascript" charset="utf-8">
+var ids = ['first_name', 'last_name','street_address','city','state','zip', 'Billing_address', 'Billing_city', 'Billing_state', 'Billing_zip', 'Card_type', 'Card_number', 'Card_date'];
+
+
+	function validate( ){
+		var errors = new Array();
+
+		for(var x = 0 ; x <document.forms[0].elements.length ; x++ ) {
+			if(document.forms[0].elements[ x ].type == "text"){
+				if(document.forms[0].elements[ x ].value == ""){
+					errors.push("The " + document.forms[0].elements[x].name + " field cannot be blank\n");
+					document.forms[0].elements[x].className = "in_error";
+				} else {
+					document.forms[0].elements[x].className = "no_error";
+				}
+			}
+
+			if( document.forms[0].elements[x].type == "select-one"){
+				if(document.forms[0].elements[x].selectIndex == 0){
+					errors.push("The " + document.forms[0].elements[x].name + " field cannot be blank\n");
+					document.forms[0].elements[x].className = "in_error";
+				} else {
+					document.forms[0].elements[x].className = "no_error";
+				}
+			}
+		}
+
+		if(errors.length == 0 ){
+			return true;
+		} else {
+			clear_errors( );
+			show_errors( errors );
+
+			return false;
+		}
+	}
+	
+	var products = [];
+      var url_string = document.location.search.substring(1,document.location.search.length);
+      if( url_string.length > 0 ) {
+        var parameters = url_string.split('&');
+        for(var x = 0 ; x < parameters.length ; x++ ) {
+          products.push(parameters[x].split('='));
+        }
+        console.log(products);
+      } else {
+        console.log("no parameters");
+      }
+	
+	function FillBilling(z){
+		if(z.billingtoo.checked == true) {
+			z.Billing_address.value = z.street_address.value;
+			z.Billing_city.value = z.city.value;
+			z.Billing_state.value = z.state.value;
+			z.Billing_zip.value = z.zip.value;
+		}
+			if(z.billingtoo.checked == false){
+				z.Billing_address.value = '';
+				z.Billing_city.value = '';
+				z.Billing_state.value = '';
+				z.Billing_zip.value = '';
+		}
+	}
+
+	function clear_errors(){
+		var div = document.getElementById( "errors" );
+		while(div.hasChildNodes()){
+			div.removeChild(div.firstChild);
+		}
+	}
+
+	function show_errors( errors ) {
+		var div = document.getElementById( "errors" );
+		for( var x = 0 ; x < errors.length ; x++ ) {
+			var error = document.createTextNode( errors[ x ]);
+			var p = document.createElement( "p" );
+			p.appendChild(error);
+			div.appendChild(p);
+		}
+	}
+
+	window.onload = function() {
+		document.forms[ 0 ].onsubmit = validate;
+		
+		for( var x = 0 ; x < ids.length ; x++ ) {
+        var element = document.getElementById(ids[x]);
+		element.onfocus = function(){
+			console.log(this.id + " has been focused");
+			this.className = "element_focused";
+			document.getElementById(this.id + "_label").className = "element_focused";
+		}
+		
+		element.onblur = function( ) {
+          console.log(this.id + " has been blurred");
+          this.className = "";
+          document.getElementById(this.id + "_label").className = "";
+        }
+	}
+	
+		var products_div = document.getElementById("products");
+        var order_form = document.getElementById("order_form");
+
+        for( var x = 0 ; x < products.length ; x++ ) {
+          //create colored background div's
+          var div = document.createElement("div");
+          div.style.backgroundColor = products[x][1];
+          products_div.appendChild(div);
+
+          //create form fields
+          var input = document.createElement("input");
+          input.type = "hidden";
+          input.name = products[x][0];
+          input.value = products[x][1];
+          order_form.appendChild(input);
+        }
+	}
+</script>
+
+<style type="text/css" media="screen">
+	#errors {
+		color: #F00;
+	}
+
+	.in_error{
+		background-color: #F00;
+	}
+
+	.no_error{
+		background-color: #FFFFFF;
+	}
+	
+	input.element_focused, select.element_focused {
+        border: 5px solid #F00;
+    }
+	
+	label.element_focused {
+		color: #F00;
+    }
+</style>
+
+</head>
+
+<body>
+<h1>Products</h1>
+<div id="products"></div>
+
+<div id="errors"></div>
+
+<form method="get" action="https://suchnull.com/examples/echo">
+
+<p>
+<label for="first_name" id="first_name_label">First Name:</label>
+<input type="text" name="first name" value="" id="first_name"/>
+</p>
+
+<p>
+<label for="last_name" id="last_name_label">Last Name:</label>
+<input type="text" name="last name" value="" id="last_name"/>
+</p>
+
+<p>
+<label for="street_address" id="street_address_label">Shipping Address:</label>
+<input type="text" name="street address" value="" id="street_address"/>
+<input type="checkbox" onclick="FillBilling(this.form)" name="billingtoo"/>
+</p>
+
+<p>
+<label for="city" id="city_label">Shipping City:</label>
+<input type="text" name="city" value="" id="city"/>
+</p>
+
+<p>
+<label for="state" id="state_label">Shipping State:</label>
+<input type="text" name="state" value="" id="state"/>
+</p>
+
+<p>
+<label for="zip" id="zip_label">Shipping Zip:</label>
+<input type="text" name="zip" value="" id="zip"/>
+</p>
+
+<p>
+<label for="Billing_address" id="Billing_address_label">Billing address:</label>
+<input type="text" name="Billing address" value="" id="Billing_address"/>
+</p>
+
+<p>
+<label for="Billing_city" id="Billing_city_label">Billing City:</label>
+<input type="text" name="Billing city" value="" id="Billing_city"/>
+</p>
+
+<p>
+<label for="Billing_state" id="Billing_state_label">Billing State:</label>
+<input type="text" name="Billing state" value="" id="Billing_state"/>
+</p>
+
+<p>
+<label for="Billing_zip" id="Billing_zip_label">Billing Zip:</label>
+<input type="text" name="Billing zip" value="" id="Billing_zip"/>
+</p>
+
+<p>
+<label for="Card_type" id="Card_type_label">Credit Card Type:</label>
+<input type="text" name="Card type" value="" id="Card_type"/>
+</p>
+
+<p>
+<label for="Card_number" id="Card_number_label">Credit Card Number:</label>
+<input type="text" name="Card number" value="" id="Card_number"/>
+</p>
+
+<p>
+<label for="Card_date" id="Card_date_label">Credit Card Expiration Date:</label>
+<input type="text" name="Card date" value="" id="Card_date"/>
+</p>
+
+<p>
+<form method="get" action="https://suchnull.com/examples/echo">
+ <input type="checkbox" name="checkbox" value="check"  /> I've completed the information
+ <input type="submit" name="submit" value="submit" onclick="if(!this.form.checkbox.checked){alert('You must agree to the terms first.');return false}"  />
+</form>
+
+</p>
+</form>
+
+</body>
+</html>

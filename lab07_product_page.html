@@ -1,0 +1,92 @@
+<html>
+
+
+<head>
+<title>Lab 07 - Product Page</title>
+<script type="text/javascript">
+	var products = [];
+      var url_string = document.location.search.substring(1,document.location.search.length);
+      if( url_string.length > 0 ) {
+        var parameters = url_string.split('&');
+        for(var x = 0 ; x < parameters.length ; x++ ) {
+          products.push(parameters[x].split('='));
+        }
+        console.log(products);
+      } else {
+        console.log("no parameters");
+      }	
+	
+window.onload = function( ) {
+		var form = document.getElementById("order_form");
+        form.onsubmit = function( ) {
+          var controls = document.getElementsByTagName("input");
+          for( var x = 0 ; x < controls.length ; x++ ){
+            if( controls[x].type == "checkbox" && controls[x].checked ) {
+              return true;
+            }
+          }
+          alert("You must select one product at least");
+          return false;
+        }
+		
+		
+	}
+</script>
+</head>
+
+<body>
+
+  
+  
+
+<style>
+	body{
+		background-color:#56A5EC;
+	}
+	
+
+</style>
+</head>
+
+<body>
+
+
+<form action="lab07_order_form.html" method="get" id="order_form">
+<h2>Lenovo Computer - $650.00</h2>
+<div>
+<input type="checkbox" name="Product1" value="" id="Product1"/>
+<label for="product-1"><img src="Lenovo-pc.jpg" alt="Computer" style="width:225px;height:200px;"> Thi computer has many features built into it such as Intel i5 core processor 8GB ram and 1 TB of memory.</label>
+</div>
+
+<h2>Nintendo 64 - $50.00</h2>
+<div>
+<input type="checkbox" name="Product2" value="" id="Product2"/>
+<label for="product-2"><img src="Nintendo-64.jpg" alt="Nintendo" style="width:225px;height:200px;"> A console from the 90's that many kids loved to play at a friends house and an all around family activity. Though cartridges are sold separately and come in serveral different games.</label>
+</div>
+
+<h2>Playstation 2 - $150.00</h2>
+<div>
+<input type="checkbox" name="Product3" value="" id="Product3"/>
+<label for="product-3"><img src="playstation.jpg" alt="ps2" style="width:225px;height:200px;"> The Playstation 2 is a more modern console that is one of our highly anticipated consoles.</label>
+</div>
+
+<h2>Xbox - $125.00</h2>
+<div>
+<input type="checkbox" name="Product4" value="" id="Product4"/>
+<label for="product-4"><img src="xbox.jpg" alt="xbox" style="width:225px;height:200px;">Xbox is made by microsoft and has one of the most iconic games ever played Halo and are in limited supply</label>
+</div>
+
+<div>
+	<input type="submit" value="Purchase item's"/>
+</div>
+</form>
+
+<form action="lab_07.html" method="get" id="lab_07">
+	<input type="submit" value="Back"/>
+</form>
+
+
+
+
+</body>
+</html>
